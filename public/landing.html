@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>DTC — Digital Tools Corner | AI Academic Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --ink:#0a0e1a;
+  --ink2:#1a2035;
+  --muted:#6b7a99;
+  --light:#f4f6fc;
+  --card:#ffffff;
+  --border:#e4e8f4;
+  --accent:#2354f4;
+  --accent2:#0fc4a7;
+  --warn:#f59e0b;
+  --error:#ef4444;
+  --ok:#10b981;
+  --glow:rgba(35,84,244,.18);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--ink);color:#fff;overflow-x:hidden;line-height:1.6}
+
+/* ── Noise overlay ── */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.5}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:.9rem 2rem;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(20px);background:rgba(10,14,26,.8);border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-logo{display:flex;align-items:center;gap:.65rem;text-decoration:none}
+.nav-mark{width:36px;height:36px;background:var(--accent);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:#fff;letter-spacing:-.02em;flex-shrink:0}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:#fff}
+.nav-sub{font-size:.62rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;display:block;margin-top:-2px}
+.nav-links{display:flex;align-items:center;gap:.3rem}
+.nav-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:.85rem;padding:.4rem .8rem;border-radius:7px;transition:all .2s}
+.nav-links a:hover{color:#fff;background:rgba(255,255,255,.07)}
+.btn-portal-nav{background:var(--accent)!important;color:#fff!important;font-weight:600!important;padding:.42rem 1rem!important}
+.btn-portal-nav:hover{background:#1a43d4!important}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:8rem 2rem 5rem;position:relative;text-align:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(90px);animation:drift 10s ease-in-out infinite}
+.hero-orb-1{width:600px;height:600px;background:radial-gradient(circle,rgba(35,84,244,.35) 0%,transparent 70%);top:-10%;left:-10%;animation-delay:0s}
+.hero-orb-2{width:500px;height:500px;background:radial-gradient(circle,rgba(15,196,167,.25) 0%,transparent 70%);bottom:-5%;right:-5%;animation-delay:-5s}
+.hero-orb-3{width:300px;height:300px;background:radial-gradient(circle,rgba(245,158,11,.15) 0%,transparent 70%);top:30%;left:60%;animation-delay:-2s}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-30px) scale(1.05)}}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 40%,transparent 100%)}
+.hero-content{position:relative;z-index:1;max-width:780px}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(35,84,244,.15);border:1px solid rgba(35,84,244,.3);border-radius:99px;padding:.35rem 1rem;font-size:.75rem;font-weight:500;color:rgba(255,255,255,.8);margin-bottom:1.8rem;letter-spacing:.04em}
+.hero-badge .dot{width:6px;height:6px;background:var(--accent2);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.hero-h1{font-family:'Syne',sans-serif;font-size:clamp(2.6rem,6vw,4.5rem);font-weight:800;line-height:1.05;letter-spacing:-.03em;margin-bottom:1.2rem}
+.hero-h1 .accent-word{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:clamp(1rem,2vw,1.15rem);color:rgba(255,255,255,.6);max-width:580px;margin:0 auto 2.5rem;font-weight:300;line-height:1.7}
+.hero-ctas{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}
+.btn-primary{background:var(--accent);color:#fff;border:none;padding:.8rem 1.8rem;border-radius:10px;font-size:.92rem;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;transition:all .2s;box-shadow:0 0 30px rgba(35,84,244,.4)}
+.btn-primary:hover{background:#1a43d4;transform:translateY(-1px);box-shadow:0 0 40px rgba(35,84,244,.55)}
+.btn-ghost{background:rgba(255,255,255,.07);color:#fff;border:1px solid rgba(255,255,255,.15);padding:.8rem 1.8rem;border-radius:10px;font-size:.92rem;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;transition:all .2s}
+.btn-ghost:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25)}
+
+/* ── STATS BAR ── */
+.stats-bar{background:rgba(255,255,255,.04);border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07);padding:2rem;display:flex;justify-content:center;gap:0;position:relative;z-index:1}
+.stat-item{flex:1;max-width:180px;text-align:center;padding:0 1.5rem;border-right:1px solid rgba(255,255,255,.08)}
+.stat-item:last-child{border-right:none}
+.stat-val{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:#fff;letter-spacing:-.02em}
+.stat-lbl{font-size:.72rem;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.08em;margin-top:.2rem}
+
+/* ── SECTIONS ── */
+section{padding:6rem 2rem;position:relative;z-index:1}
+.section-label{font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.15em;color:var(--accent2);margin-bottom:.8rem}
+.section-title{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-bottom:1rem}
+.section-sub{font-size:1rem;color:rgba(255,255,255,.5);max-width:520px;font-weight:300;line-height:1.7}
+.container{max-width:1100px;margin:0 auto}
+
+/* ── TOOLS GRID ── */
+#tools{background:linear-gradient(180deg,var(--ink) 0%,rgba(20,26,50,.6) 100%)}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07);border-radius:18px;overflow:hidden;margin-top:3rem}
+.tool-card{background:rgba(14,18,35,.9);padding:1.6rem;position:relative;overflow:hidden;transition:background .25s;cursor:default}
+.tool-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at top left,rgba(35,84,244,.08),transparent 60%);opacity:0;transition:opacity .3s}
+.tool-card:hover{background:rgba(22,28,55,.95)}
+.tool-card:hover::before{opacity:1}
+.tool-icon{font-size:2rem;margin-bottom:.9rem;display:block}
+.tool-tag{display:inline-block;background:rgba(35,84,244,.15);border:1px solid rgba(35,84,244,.25);color:rgba(255,255,255,.6);font-size:.63rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:.2rem .6rem;border-radius:99px;margin-bottom:.7rem}
+.tool-name{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.45rem}
+.tool-desc{font-size:.82rem;color:rgba(255,255,255,.5);line-height:1.6;font-weight:300}
+
+/* ── FEATURES ── */
+#features{background:var(--ink2)}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.5rem;margin-top:3rem}
+.feat-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.5rem;transition:all .25s}
+.feat-card:hover{background:rgba(255,255,255,.07);border-color:rgba(35,84,244,.3);transform:translateY(-2px)}
+.feat-icon{font-size:1.6rem;margin-bottom:1rem;display:block}
+.feat-title{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.5rem}
+.feat-desc{font-size:.82rem;color:rgba(255,255,255,.5);line-height:1.6;font-weight:300}
+
+/* ── CUSTOMER PORTAL ── */
+#portal{background:var(--ink)}
+.portal-wrap{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:20px;overflow:hidden;margin-top:3rem}
+.portal-login{padding:2.5rem;max-width:460px;margin:0 auto}
+.portal-login-title{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:.4rem;text-align:center}
+.portal-login-sub{font-size:.83rem;color:rgba(255,255,255,.5);text-align:center;margin-bottom:1.8rem}
+.field{margin-bottom:1rem}
+.field label{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.5);display:block;margin-bottom:.4rem}
+.field input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:9px;padding:.65rem .9rem;font-size:.9rem;color:#fff;font-family:'DM Sans',sans-serif;outline:none;transition:border .2s}
+.field input:focus{border-color:var(--accent)}
+.field input::placeholder{color:rgba(255,255,255,.25)}
+.btn-portal{width:100%;background:var(--accent);color:#fff;border:none;border-radius:9px;padding:.7rem;font-size:.92rem;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:.4rem;transition:all .2s}
+.btn-portal:hover{background:#1a43d4}
+.portal-msg{font-size:.8rem;border-radius:8px;padding:.5rem .8rem;margin-top:.8rem;display:none;text-align:center}
+.portal-msg.err{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#f87171}
+.portal-msg.ok{background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.25);color:#34d399}
+
+/* Portal Dashboard */
+#portal-dash{display:none;padding:2rem}
+.portal-dash-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:gap}
+.portal-greeting{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700}
+.btn-portal-logout{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);padding:.35rem .9rem;border-radius:7px;font-size:.78rem;cursor:pointer;transition:all .2s}
+.btn-portal-logout:hover{background:rgba(255,255,255,.12);color:#fff}
+.subs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
+.sub-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:13px;padding:1.2rem;position:relative;overflow:hidden;transition:all .25s}
+.sub-card:hover{border-color:rgba(35,84,244,.3);background:rgba(255,255,255,.07)}
+.sub-card.expired{border-color:rgba(239,68,68,.2);background:rgba(239,68,68,.05)}
+.sub-card.expiring{border-color:rgba(245,158,11,.2);background:rgba(245,158,11,.04)}
+.sub-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.85rem}
+.sub-product-tag{display:inline-block;padding:.18rem .6rem;border-radius:5px;font-size:.65rem;font-weight:700;letter-spacing:.03em;margin-bottom:.4rem}
+.tag-claude{background:rgba(35,84,244,.2);color:#93b4ff}
+.tag-chatgpt{background:rgba(16,185,129,.15);color:#6ee7b7}
+.sub-name{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;line-height:1.2}
+.sub-pkg{font-size:.75rem;color:rgba(255,255,255,.45);margin-top:.15rem}
+.sub-status-badge{padding:.22rem .65rem;border-radius:99px;font-size:.68rem;font-weight:600;white-space:nowrap}
+.badge-active{background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);color:#34d399}
+.badge-expired{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#f87171}
+.badge-deactivated{background:rgba(107,122,153,.1);border:1px solid rgba(107,122,153,.2);color:#94a3b8}
+.sub-meta{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-bottom:.9rem}
+.sm-lbl{font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.35);margin-bottom:.2rem;font-weight:600}
+.sm-val{font-size:.82rem;color:rgba(255,255,255,.8)}
+.sm-val.green{color:#34d399}.sm-val.warn{color:#fcd34d}.sm-val.red{color:#f87171}
+.sub-bar-wrap{margin-top:.3rem}
+.sub-bar-label{display:flex;justify-content:space-between;font-size:.65rem;color:rgba(255,255,255,.35);margin-bottom:.35rem}
+.sub-bar{height:4px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden}
+.sub-bar-fill{height:100%;border-radius:99px}
+.portal-empty{text-align:center;padding:3rem 1rem;color:rgba(255,255,255,.35);font-size:.9rem}
+
+/* ── CONTACT ── */
+#contact{background:linear-gradient(135deg,rgba(35,84,244,.1) 0%,rgba(15,196,167,.08) 100%);border-top:1px solid rgba(255,255,255,.06)}
+.contact-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:3rem;text-align:center;max-width:600px;margin:2.5rem auto 0}
+.contact-card h3{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;margin-bottom:.5rem}
+.contact-card p{font-size:.9rem;color:rgba(255,255,255,.5);margin-bottom:2rem;font-weight:300}
+.contact-chips{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}
+.contact-chip{display:flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:99px;padding:.55rem 1.2rem;font-size:.85rem;font-weight:500;text-decoration:none;color:#fff;transition:all .2s}
+.contact-chip:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2);transform:translateY(-1px)}
+.contact-chip .chi{font-size:1rem}
+
+/* ── FOOTER ── */
+footer{padding:2rem;background:rgba(0,0,0,.4);border-top:1px solid rgba(255,255,255,.05);text-align:center}
+.footer-logo{display:flex;align-items:center;gap:.5rem;justify-content:center;margin-bottom:.7rem;text-decoration:none}
+.footer-logo .fm{width:28px;height:28px;background:var(--accent);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:11px;color:#fff}
+.footer-logo span{font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;color:rgba(255,255,255,.7)}
+.footer-tagline{font-size:.78rem;color:rgba(255,255,255,.3);font-weight:300}
+.footer-links{display:flex;gap:1.5rem;justify-content:center;margin-top:.8rem}
+.footer-links a{font-size:.75rem;color:rgba(255,255,255,.3);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:rgba(255,255,255,.6)}
+
+/* ── Animate on scroll ── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:700px){
+  nav{padding:.75rem 1rem}
+  .nav-links{display:none}
+  .hero{padding:7rem 1.2rem 4rem}
+  section{padding:4rem 1.2rem}
+  .stats-bar{flex-wrap:wrap;gap:1rem}
+  .stat-item{border:none;min-width:120px}
+  .portal-login{padding:1.5rem}
+  #portal-dash{padding:1.2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-mark">DTC</div>
+    <div>
+      <div class="nav-brand">Digital Tools Corner</div>
+      <span class="nav-sub">AI Academic Tools</span>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="#tools">Tools</a>
+    <a href="#features">Why DTC</a>
+    <a href="#contact">Contact</a>
+    <a href="#portal" class="btn-portal-nav">My Portal</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-orb hero-orb-3"></div>
+    <div class="hero-grid"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge" id="hero-badge">
+      <span class="dot"></span>
+      <span id="hero-badge-text">AI-Powered Academic Tools</span>
+    </div>
+    <h1 class="hero-h1" id="hero-headline">Loading…</h1>
+    <p class="hero-sub" id="hero-sub"></p>
+    <div class="hero-ctas">
+      <a href="#tools" class="btn-primary" id="hero-cta">Explore Tools ↓</a>
+      <a href="#portal" class="btn-ghost">My Portal →</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar" id="stats-bar"></div>
+
+<!-- TOOLS -->
+<section id="tools">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Our Tools</div>
+      <h2 class="section-title" id="tools-title">Premium <span style="background:linear-gradient(135deg,#2354f4,#0fc4a7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">AI & Academic</span> Tools</h2>
+      <p class="section-sub">Everything a modern student or researcher needs — hand-picked, premium subscriptions at accessible prices.</p>
+    </div>
+    <div class="tools-grid reveal" id="tools-grid"></div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Why Choose DTC</div>
+      <h2 class="section-title">Built for <span style="background:linear-gradient(135deg,#f59e0b,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Students</span> First</h2>
+      <p class="section-sub">We handle the complexity so you can focus on what matters — your work.</p>
+    </div>
+    <div class="features-grid reveal" id="features-grid"></div>
+  </div>
+</section>
+
+<!-- CUSTOMER PORTAL -->
+<section id="portal">
+  <div class="container">
+    <div class="reveal" style="text-align:center;margin-bottom:0">
+      <div class="section-label">Customer Portal</div>
+      <h2 class="section-title">Track Your <span style="background:linear-gradient(135deg,#2354f4,#0fc4a7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Subscriptions</span></h2>
+      <p class="section-sub" style="margin:0 auto">Check the status of your active packages, expiry dates, and history — all in one place.</p>
+    </div>
+    <div class="portal-wrap reveal" style="margin-top:2.5rem">
+      <!-- Login -->
+      <div id="portal-login" class="portal-login">
+        <div class="portal-login-title">Sign in to your Portal</div>
+        <div class="portal-login-sub">Enter the email address you used when subscribing.</div>
+        <div class="field">
+          <label>Email Address</label>
+          <input id="cp-email" type="email" placeholder="you@example.com" autocomplete="email"/>
+        </div>
+        <button class="btn-portal" onclick="portalLookup()">View My Subscriptions →</button>
+        <div class="portal-msg" id="cp-msg"></div>
+      </div>
+      <!-- Dashboard -->
+      <div id="portal-dash">
+        <div class="portal-dash-header" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:.5rem">
+          <div class="portal-greeting">👋 Welcome back, <span id="pd-name"></span></div>
+          <button class="btn-portal-logout" onclick="portalLogout()">← Back</button>
+        </div>
+        <div class="subs-grid" id="subs-grid"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="reveal" style="text-align:center">
+      <div class="section-label">Get in Touch</div>
+      <h2 class="section-title">Ready to Get Started?</h2>
+      <p class="section-sub" style="margin:0 auto" id="contact-tagline"></p>
+    </div>
+    <div class="contact-card reveal">
+      <h3>Contact DTC</h3>
+      <p id="contact-desc">Reach us on WeChat or email — we respond fast and activate your tools same day.</p>
+      <div class="contact-chips" id="contact-chips"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a class="footer-logo" href="#">
+    <div class="fm">DTC</div>
+    <span>Digital Tools Corner</span>
+  </a>
+  <div class="footer-tagline" id="footer-tagline"></div>
+  <div class="footer-links">
+    <a href="#tools">Tools</a>
+    <a href="#portal">My Portal</a>
+    <a href="#contact">Contact</a>
+  </div>
+</footer>
+
+<script>
+'use strict';
+const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const fmt = d => d ? new Date(d).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+const daysUntil = iso => iso ? Math.ceil((new Date(iso) - new Date())/(1000*60*60*24)) : null;
+
+// ── Load content ──────────────────────────────────────────────────────────────
+async function loadContent() {
+  try {
+    const r = await fetch('/landing-content');
+    const c = await r.json();
+    renderContent(c);
+  } catch(e) { console.warn('Could not load landing content', e); }
+}
+
+function renderContent(c) {
+  // Hero
+  if (c.hero) {
+    document.getElementById('hero-badge-text').textContent = c.hero.badge || '';
+    const h1 = document.getElementById('hero-headline');
+    const words = (c.hero.headline || '').split(' ');
+    // Accent the middle-ish word
+    const accentIdx = Math.floor(words.length / 2);
+    h1.innerHTML = words.map((w,i) => i === accentIdx
+      ? `<span class="accent-word">${esc(w)}</span>`
+      : esc(w)).join(' ');
+    document.getElementById('hero-sub').textContent = c.hero.subheadline || '';
+    const cta = document.getElementById('hero-cta');
+    if (c.hero.cta) cta.textContent = c.hero.cta + ' ↓';
+  }
+
+  // Stats
+  if (c.stats && c.stats.length) {
+    document.getElementById('stats-bar').innerHTML = c.stats.map(s =>
+      `<div class="stat-item"><div class="stat-val">${esc(s.value)}</div><div class="stat-lbl">${esc(s.label)}</div></div>`
+    ).join('');
+  }
+
+  // Tools
+  if (c.tools && c.tools.length) {
+    document.getElementById('tools-grid').innerHTML = c.tools.map(t =>
+      `<div class="tool-card">
+        <span class="tool-icon">${esc(t.icon)}</span>
+        <div class="tool-tag">${esc(t.tag)}</div>
+        <div class="tool-name">${esc(t.name)}</div>
+        <div class="tool-desc">${esc(t.desc)}</div>
+      </div>`
+    ).join('');
+  }
+
+  // Features
+  if (c.features && c.features.length) {
+    document.getElementById('features-grid').innerHTML = c.features.map(f =>
+      `<div class="feat-card">
+        <span class="feat-icon">${esc(f.icon)}</span>
+        <div class="feat-title">${esc(f.title)}</div>
+        <div class="feat-desc">${esc(f.desc)}</div>
+      </div>`
+    ).join('');
+  }
+
+  // Contact
+  if (c.contact) {
+    document.getElementById('contact-tagline').textContent = c.contact.tagline || '';
+    const chips = [];
+    if (c.contact.wechat) chips.push(`<a href="#contact" class="contact-chip"><span class="chi">💬</span> WeChat: ${esc(c.contact.wechat)}</a>`);
+    if (c.contact.email)  chips.push(`<a href="mailto:${esc(c.contact.email)}" class="contact-chip"><span class="chi">📧</span> ${esc(c.contact.email)}</a>`);
+    document.getElementById('contact-chips').innerHTML = chips.join('');
+  }
+
+  // Footer
+  if (c.footer && c.footer.tagline) {
+    document.getElementById('footer-tagline').textContent = c.footer.tagline;
+  }
+}
+
+// ── Scroll reveal ─────────────────────────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── Customer Portal ───────────────────────────────────────────────────────────
+async function portalLookup() {
+  const email = document.getElementById('cp-email').value.trim();
+  const msg   = document.getElementById('cp-msg');
+  msg.style.display = 'none';
+  if (!email) { showMsg(msg, 'Please enter your email address.', true); return; }
+  const btn = document.querySelector('.btn-portal');
+  btn.textContent = 'Looking up…'; btn.disabled = true;
+  try {
+    const r = await fetch(`/customer/lookup?email=${encodeURIComponent(email)}`);
+    const d = await r.json();
+    btn.textContent = 'View My Subscriptions →'; btn.disabled = false;
+    if (!r.ok) { showMsg(msg, d.error || 'No subscriptions found.', true); return; }
+    renderDash(d);
+  } catch(e) { btn.textContent = 'View My Subscriptions →'; btn.disabled = false; showMsg(msg, 'Connection error. Try again.', true); }
+}
+
+function showMsg(el, text, isErr) {
+  el.textContent = text;
+  el.className = 'portal-msg ' + (isErr ? 'err' : 'ok');
+  el.style.display = 'block';
+}
+
+function renderDash(data) {
+  document.getElementById('portal-login').style.display = 'none';
+  document.getElementById('portal-dash').style.display  = 'block';
+  document.getElementById('pd-name').textContent = data.customerName || 'Customer';
+
+  const subs = data.subscriptions || [];
+  if (!subs.length) {
+    document.getElementById('subs-grid').innerHTML = '<div class="portal-empty">No subscriptions found.</div>';
+    return;
+  }
+
+  document.getElementById('subs-grid').innerHTML = subs.map(s => {
+    const days    = s.daysRemaining;
+    const isExp   = s.status === 'expired';
+    const isDeact = s.status === 'deactivated';
+    const isWarn  = !isExp && !isDeact && days !== null && days <= 30 && days >= 0;
+    const total   = s.durationDays || 30;
+    const used    = days !== null ? Math.max(0, total - days) : total;
+    const pct     = Math.min(100, Math.max(0, (used / total) * 100));
+    const barColor= isExp || (days !== null && days <= 5) ? '#ef4444' : isWarn ? '#f59e0b' : '#10b981';
+    const cardCls = 'sub-card' + (isExp || isDeact ? ' expired' : isWarn ? ' expiring' : '');
+
+    const badge = isDeact
+      ? '<span class="sub-status-badge badge-deactivated">Deactivated</span>'
+      : isExp
+        ? '<span class="sub-status-badge badge-expired">Expired</span>'
+        : '<span class="sub-status-badge badge-active">Active</span>';
+
+    const dCls = isExp ? 'red' : isWarn ? 'warn' : 'green';
+    const daysStr = days === null ? '—' : days < 0 ? `Expired ${Math.abs(days)}d ago` : days === 0 ? 'Expires today' : `${days} days left`;
+    const prodTag = s.product === 'chatgpt'
+      ? '<span class="sub-product-tag tag-chatgpt">ChatGPT Plus</span>'
+      : '<span class="sub-product-tag tag-claude">Claude Pro</span>';
+    const expDate = s.subscriptionExpiresAt
+      ? new Date(s.subscriptionExpiresAt).toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'}) : '—';
+
+    return `<div class="${cardCls}">
+      <div class="sub-card-top">
+        <div>
+          ${prodTag}
+          <div class="sub-name">${esc(s.customerName)}</div>
+          <div class="sub-pkg">${esc(s.packageType)}</div>
+        </div>
+        ${badge}
+      </div>
+      <div class="sub-meta">
+        <div><div class="sm-lbl">Activated</div><div class="sm-val">${fmt(s.approvedAt)}</div></div>
+        <div><div class="sm-lbl">Expires</div><div class="sm-val">${expDate}</div></div>
+        <div style="grid-column:1/-1"><div class="sm-lbl">Status</div><div class="sm-val ${dCls}">${daysStr}</div></div>
+      </div>
+      <div class="sub-bar-wrap">
+        <div class="sub-bar-label">
+          <span>Subscription usage</span>
+          <span>${Math.round(pct)}% used</span>
+        </div>
+        <div class="sub-bar">
+          <div class="sub-bar-fill" style="width:${pct}%;background:${barColor}"></div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function portalLogout() {
+  document.getElementById('portal-login').style.display = 'block';
+  document.getElementById('portal-dash').style.display  = 'none';
+  document.getElementById('cp-email').value = '';
+  document.getElementById('cp-msg').style.display = 'none';
+}
+
+document.getElementById('cp-email').addEventListener('keydown', e => { if (e.key === 'Enter') portalLookup(); });
+
+// Init
+loadContent();
+</script>
+</body>
+</html>
